@@ -13,6 +13,9 @@ public class JavaLambdaOperation {
 //        JavaLambdaOperation.useLambda();
 //    }
 
+    /**
+     * 通过匿名内部类实现的方式
+     */
     @Test
     public void noLambda() {
         Comparator<Integer> comparator = new Comparator<Integer>() {
@@ -56,7 +59,36 @@ public class JavaLambdaOperation {
     }
 
     // 优化方式一：
-    // 使用策略设计模式，定义接口MyPredicate，创建接口实现类来判定对应条件
+    // 使用策略设计模式，定义接口MyPredicate，创建接口实现类来判定对应条件，但是这种方式需要定义很多MyPredicate的实例
+    @Test
+    public void filterAgeUp30() {
+        List<Employee> empList = filterEmployee(emps, new FilterEmployeeByAge());
+        for (Employee employee : empList) {
+            System.out.println(employee);
+        }
+
+        System.out.println("=====================");
+
+        List<Employee> empList1 = filterEmployee(emps, new FilterEmployeeBySalary());
+        for (Employee employee : empList1) {
+            System.out.println(employee);
+        }
+    }
+
+    // 优化方式二：匿名内部类
+    @Test
+    public void test1() {
+        List<Employee> list = filterEmployee(emps, new MyPredicate<Employee>() {
+            @Override
+            public boolean test(Employee employee) {
+                return employee.getSalary()>=5000;
+            }
+        });
+        for (Employee employee : list) {
+            System.out.println(employee);
+        }
+    }
+
     public List<Employee> filterEmployee(List<Employee> emps, MyPredicate<Employee> predicate) {
         List<Employee> result = new ArrayList<>();
         for (Employee emp : emps) {
@@ -64,7 +96,6 @@ public class JavaLambdaOperation {
                 result.add(emp);
             }
         }
-
         return result;
     }
 }
