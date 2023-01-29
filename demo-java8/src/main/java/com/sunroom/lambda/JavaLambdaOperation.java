@@ -8,11 +8,6 @@ import java.util.*;
 
 public class JavaLambdaOperation {
 
-//    public static void main(String[] args) {
-//        JavaLambdaOperation.noLambda();
-//        JavaLambdaOperation.useLambda();
-//    }
-
     /**
      * 通过匿名内部类实现的方式
      */
@@ -87,6 +82,28 @@ public class JavaLambdaOperation {
         for (Employee employee : list) {
             System.out.println(employee);
         }
+    }
+
+    // 优化方式三：Lambda表达式
+    @Test
+    public void test2() {
+        List<Employee> list = filterEmployee(emps, (employee -> employee.getAge() > 30));
+        list.forEach(System.out::println);
+    }
+
+    // 优化方式四：
+    @Test
+    public void test3() {
+        emps.stream()
+                .filter(employee -> employee.getSalary() > 5000)
+                .limit(1)
+                .forEach(System.out::println);
+
+        System.out.println("===============================");
+
+        emps.stream()
+                .map(Employee::getUsername)
+                .forEach(System.out::println);
     }
 
     public List<Employee> filterEmployee(List<Employee> emps, MyPredicate<Employee> predicate) {
